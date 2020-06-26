@@ -34,19 +34,6 @@ namespace Luby.Controllers
             return task;
         }
 
-        // Visualizar as task de um determinado usuario
-        [HttpGet]
-        [Route("user/{id:int}")]
-        public async Task<ActionResult<List<Task>>> GetByUser([FromServices] DataContext context, int id)
-        {
-            var tasks = await context.Tasks
-                .Include(x => x.User)
-                .AsNoTracking()
-                .Where(x => x.UserId == id)
-                .ToListAsync();
-            return tasks;
-        }
-
         // Registro
         [HttpPost]
         [Route("")]
