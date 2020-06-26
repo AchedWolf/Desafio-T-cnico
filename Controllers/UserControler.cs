@@ -9,7 +9,7 @@ using Luby.Services;
 namespace Luby.Controllers
 {
     [ApiController]
-    [Route("/user")]
+    [Route("user")]
     public class UserController : ControllerBase
     {
         // Registro

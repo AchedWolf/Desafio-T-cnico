@@ -8,37 +8,14 @@ using Task = Luby.Models.Task;
 
 namespace Luby.Controllers
 {
-    // Necessario adicionar autenticação de usuario
-
     [ApiController]
-    [Route("v1/tasks")]
+    [Route("task")]
     public class TaskController : ControllerBase
     {
-        // Exemplo: Visualizar todas as Tasks
-        [HttpGet]
-        [Route("")]
-        public async Task<ActionResult<List<Task>>> Get([FromServices] DataContext context)
-        {
-            var tasks = await context.Tasks.Include(x => x.User).ToListAsync();
-            return tasks;
-        }
-
-        // Exemplo: Visualizar uma task peli Id
-        [HttpGet]
-        [Route("{id:int}")] // adicionar o token de autenticacao
-        public async Task<ActionResult<Task>> GetById([FromServices] DataContext context, int id)
-        {
-            var task = await context.Tasks
-                .Include(x => x.User)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == id);
-            return task;
-        }
-
-        // Registro
+        // Registrar nova task
         [HttpPost]
         [Route("")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ActionResult<Task>> Post(
             [FromServices] DataContext context,
             [FromBody]Task model)
@@ -54,5 +31,35 @@ namespace Luby.Controllers
                 return BadRequest(ModelState);
             }
         }
+
+        // Visualizar todas as Tasks
+        [HttpGet]
+        [Route("")]
+        [Authorize]
+        public async Task<ActionResult<List<Task>>> Get([FromServices] DataContext context)
+        {
+            var tasks = await context.Tasks.Include(x => x.User).ToListAsync();
+            return tasks;
+        }
+
+        // Visualizar uma task pelo Id
+        [HttpGet]
+        [Route("{id:int}")] // adicionar o token de autenticacao
+        public async Task<ActionResult<Task>> GetById([FromServices] DataContext context, int id)
+        {
+            var task = await context.Tasks
+                .Include(x => x.User)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
+            return task;
+        }
+
+        /*[HttpDelete]
+        [Route("{id:int}")]
+        public async Task<ActionResult<Task>> GetById([FromServices] DataContext context1, int id)
+        {
+            var 
+        }*/
+        
     }
 }
