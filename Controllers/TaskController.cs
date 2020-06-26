@@ -37,7 +37,7 @@ namespace Luby.Controllers
         // Visualizar as task de um determinado usuario
         [HttpGet]
         [Route("user/{id:int}")]
-        public async Task<ActionResult<List<Task>>> GetByCategory([FromServices] DataContext context, int id)
+        public async Task<ActionResult<List<Task>>> GetByUser([FromServices] DataContext context, int id)
         {
             var tasks = await context.Tasks
                 .Include(x => x.User)
