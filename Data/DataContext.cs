@@ -10,7 +10,8 @@ namespace Luby.Data
         {
         }
 
-        public DbSet<Task> Tasks { get; set; }
+        // Objetos
+        public DbSet<Task> Tasks { get; set; } 
         public DbSet<User> Users { get; set; }
     }
 }

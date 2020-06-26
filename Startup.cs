@@ -22,6 +22,9 @@ namespace Luby
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // BD normal
+            // services.AddDbContext<DataContext>(opt => opt.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=LubyDB;Trusted_Connection=true;"));   
+
             // BD na memoria
             services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("Database"));
             services.AddScoped<DataContext, DataContext>();

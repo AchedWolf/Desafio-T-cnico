@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,12 +9,13 @@ using Luby.Services;
 namespace Luby.Controllers
 {
     [ApiController]
-    [Route("v1/users")]
+    [Route("/user")]
     public class UserController : ControllerBase
     {
-        // Rota de registro de um novo usuario
+        // Registro
         [HttpPost]
         [Route("")]
+        [AllowAnonymous]
         public async Task<ActionResult<User>> Post(
             [FromServices] DataContext context,
             [FromBody]User model)
@@ -32,7 +32,7 @@ namespace Luby.Controllers
             }
         }
 
-        // Login -> Validação
+        // Autenticação
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]

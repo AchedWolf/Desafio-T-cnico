@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Luby.Data;
 using Task = Luby.Models.Task;
 
@@ -13,7 +14,7 @@ namespace Luby.Controllers
     [Route("v1/tasks")]
     public class TaskController : ControllerBase
     {
-        // Visualizar todas as Tasks
+        // Exemplo: Visualizar todas as Tasks
         [HttpGet]
         [Route("")]
         public async Task<ActionResult<List<Task>>> Get([FromServices] DataContext context)
@@ -22,7 +23,7 @@ namespace Luby.Controllers
             return tasks;
         }
 
-        // Visualizar uma task peli Id
+        // Exemplo: Visualizar uma task peli Id
         [HttpGet]
         [Route("{id:int}")] // adicionar o token de autenticacao
         public async Task<ActionResult<Task>> GetById([FromServices] DataContext context, int id)
@@ -37,6 +38,7 @@ namespace Luby.Controllers
         // Registro
         [HttpPost]
         [Route("")]
+        [AllowAnonymous]
         public async Task<ActionResult<Task>> Post(
             [FromServices] DataContext context,
             [FromBody]Task model)
