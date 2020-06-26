@@ -19,8 +19,9 @@ namespace Luby.Controllers
             return users;
         }
 
+        // Rota de registro de um novo usuario
         [HttpPost]
-        [Route("")]
+        [Route("register")]
         public async Task<ActionResult<User>> Post(
             [FromServices] DataContext context,
             [FromBody]User model)
