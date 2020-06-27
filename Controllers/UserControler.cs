@@ -22,6 +22,11 @@ namespace Luby.Controllers
         {
             if(ModelState.IsValid)
             {
+                // Validação se usuario já existe
+                if(await context.Users.AnyAsync(x => x.user == model.user))
+                    return BadRequest(new {message = "Já existe um usuário com este nome."});
+                
+                // Criando usuario
                 context.Users.Add(model);
                 await context.SaveChangesAsync();
                 return model;
@@ -40,14 +45,18 @@ namespace Luby.Controllers
             [FromBody]User model,
             [FromServices] DataContext context)
         {
-            var user = await context.Users.FirstOrDefaultAsync(
+            // Verificando usuario e senha            
+            if(!(await context.Users.AnyAsync(
                 x => x.user == model.user && 
-                x.password == model.password);
-            
-            if(user == null)
+                x.password == model.password)))
             {
                 return NotFound(new {message = "Usuário ou senha inválidos."});
             }
+
+            // Gerando token
+            var user = await context.Users.FirstAsync(
+                x => x.user == model.user && 
+                x.password == model.password);
 
             var token = TokenService.GenerateToken(user);
             user.password = "";

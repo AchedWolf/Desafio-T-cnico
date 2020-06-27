@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Luby.Data;
+using Luby.Models;
 using Task = Luby.Models.Task;
 using System.Linq;
+using System;
 
 namespace Luby.Controllers
 {
@@ -13,7 +15,7 @@ namespace Luby.Controllers
     [Route("task")]
     public class TaskController : ControllerBase
     {
-        // Registrar nova task
+        // Registrar nova Task
         [HttpPost]
         [Route("")]
         [Authorize]
@@ -23,6 +25,11 @@ namespace Luby.Controllers
         {
             if(ModelState.IsValid)
             {
+                // Validação se usuario existe
+                if(!(await context.Users.AnyAsync(x => x.Id == model.UserId)))
+                    return BadRequest(new {message = "O usuario que você quer vincular não existe."});
+
+                // Criando Task
                 context.Tasks.Add(model);
                 await context.SaveChangesAsync();
                 return model;
@@ -39,7 +46,8 @@ namespace Luby.Controllers
         [Authorize]
         public async Task<ActionResult<List<Task>>> Get([FromServices] DataContext context)
         {
-            var tasks = await context.Tasks.Include(x => x.User).ToListAsync();
+            // Gerado lista de Tasks
+            var tasks = await context.Tasks.ToListAsync();
             return tasks;
         }
 
@@ -47,44 +55,123 @@ namespace Luby.Controllers
         [HttpGet]
         [Route("{id:int}")]
         [Authorize]
-        public async Task<ActionResult<Task>> GetById([FromServices] DataContext context, int id)
+        public async Task<ActionResult<Task>> GetById(
+            [FromServices] DataContext context, 
+            int id)
         {
+            // Buscando Task
             var task = await context.Tasks
-                .Include(x => x.User)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FirstAsync(x => x.Id == id);
             return task;
         }
- 
+
+        // Função de Deletar 
         [HttpDelete]
         [Route("{id:int}")]
         [Authorize]
-        public async Task<ActionResult<Task>> Delete([FromServices] DataContext context, int id)
+        public async Task<ActionResult<Task>> Delete(
+            [FromServices] DataContext context,
+            int id)
         {
-            var task = await context.Tasks.FirstAsync(x => x.Id == id);
-            
-            if (task == null)
+            // Verificando existencia da Task
+            if (!(await context.Tasks.AnyAsync(x => x.Id == id)))
             {
-                return NotFound();
+                return NotFound(new {message = "A Task não existe ou já foi apagada."});
             }
 
+
+            // Deletando Task
+            var task = await context.Tasks.FirstAsync(x => x.Id == id);
             context.Tasks.Remove(task);
             await context.SaveChangesAsync();
 
             return task;
         }
-        
+
+        // Função de Editar
         [HttpPut]
         [Route("{id:int}")]
         [Authorize]
-        public async Task<ActionResult<Task>> Put([FromServices] DataContext context, int id, Task task)
+        public async Task<ActionResult<Task>> Put(
+            [FromServices] DataContext context, 
+            int id, 
+            [FromBody] Task model)
         {
-            if(id != task.Id)
+            var task = await context.Tasks
+                .AsNoTracking()
+                .FirstAsync(x => x.Id == id);
+
+            if(task == null || model == null)
             {
-                return BadRequest();
+                return NotFound(new {message = "Task ou dados inválidos."});
             }
 
-            context.Entry(task).State = EntityState.Modified;
+            if(model.description != task.description)
+            {
+                task.description = model.description;
+            }
+
+            if(model.concluded != task.concluded)
+            {
+                task.concluded = model.concluded;
+            }
+
+            if(model.UserId > 0)
+            {
+                try
+                {
+                    var user = await context.Users.FirstAsync(x => x.Id == model.UserId);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return BadRequest(new {message = "Usuário não existe."});
+                }
+
+                task.UserId = model.UserId;
+            }
+
+            context.Tasks.Update(task);
+
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if(!context.Tasks.Any(x => x.Id == id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return task;
+        }
+
+        // Função de Editar concluded
+        [HttpPut]
+        [Route("concluded/{id:int}")]
+        [Authorize]
+        public async Task<ActionResult<Task>> PutConcluded(
+            [FromServices] DataContext context, 
+            int id)
+        {
+            var task = await context.Tasks
+                .AsNoTracking()
+                .FirstAsync(x => x.Id == id);
+
+            if(task == null)
+            {
+                return NotFound();
+            }
+
+            task.concluded = true;
+            
+            context.Tasks.Update(task);
 
             try
             {
@@ -104,5 +191,6 @@ namespace Luby.Controllers
 
             return NoContent();
         }
+        
     }
 }
