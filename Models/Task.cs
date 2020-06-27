@@ -11,8 +11,7 @@ namespace Luby.Models
 
         public bool concluded { get; set; } 
 
-        [Required(ErrorMessage = "Este campo é obrigatório!")]
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
         public int UserId { get; set; }
-        public User User { get; set; }
     }
 }
