@@ -4,10 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Luby.Data;
-using Luby.Models;
 using Task = Luby.Models.Task;
 using System.Linq;
-using System;
 
 namespace Luby.Controllers
 {
@@ -98,15 +96,18 @@ namespace Luby.Controllers
             int id, 
             [FromBody] Task model)
         {
-            var task = await context.Tasks
-                .AsNoTracking()
-                .FirstAsync(x => x.Id == id);
-
-            if(task == null || model == null)
+            // Validação Task e Model
+            if(!(await context.Tasks.AnyAsync(x => x.Id == id)) || model == null)
             {
                 return NotFound(new {message = "Task ou dados inválidos."});
             }
 
+            // Puchando Task
+            var task = await context.Tasks
+                .AsNoTracking()
+                .FirstAsync(x => x.Id == id);
+
+            // Verificando e substituindo diferenças
             if(model.description != task.description)
             {
                 task.description = model.description;
@@ -119,6 +120,7 @@ namespace Luby.Controllers
 
             if(model.UserId > 0)
             {
+                // Validando Id de Usuário
                 try
                 {
                     var user = await context.Users.FirstAsync(x => x.Id == model.UserId);
@@ -131,6 +133,7 @@ namespace Luby.Controllers
                 task.UserId = model.UserId;
             }
 
+            // Update na Task modificada
             context.Tasks.Update(task);
 
             try
