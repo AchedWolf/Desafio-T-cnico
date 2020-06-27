@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Luby.Data;
 using Task = Luby.Models.Task;
+using System.Linq;
 
 namespace Luby.Controllers
 {
@@ -44,7 +45,8 @@ namespace Luby.Controllers
 
         // Visualizar uma task pelo Id
         [HttpGet]
-        [Route("{id:int}")] // adicionar o token de autenticacao
+        [Route("{id:int}")]
+        [Authorize]
         public async Task<ActionResult<Task>> GetById([FromServices] DataContext context, int id)
         {
             var task = await context.Tasks
@@ -53,13 +55,54 @@ namespace Luby.Controllers
                 .FirstOrDefaultAsync(x => x.Id == id);
             return task;
         }
-
-        /*[HttpDelete]
+ 
+        [HttpDelete]
         [Route("{id:int}")]
-        public async Task<ActionResult<Task>> GetById([FromServices] DataContext context1, int id)
+        [Authorize]
+        public async Task<ActionResult<Task>> Delete([FromServices] DataContext context, int id)
         {
-            var 
-        }*/
+            var task = await context.Tasks.FirstAsync(x => x.Id == id);
+            
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            context.Tasks.Remove(task);
+            await context.SaveChangesAsync();
+
+            return task;
+        }
         
+        [HttpPut]
+        [Route("{id:int}")]
+        [Authorize]
+        public async Task<ActionResult<Task>> Put([FromServices] DataContext context, int id, Task task)
+        {
+            if(id != task.Id)
+            {
+                return BadRequest();
+            }
+
+            context.Entry(task).State = EntityState.Modified;
+
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if(!context.Tasks.Any(x => x.Id == id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
     }
 }
