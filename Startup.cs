@@ -45,6 +45,9 @@ namespace Luby
                     ValidateAudience = false
                 };
             });
+
+            // Swagger
+            services.AddSwaggerDocument();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context)
@@ -55,6 +58,9 @@ namespace Luby
             }
 
             app.UseHttpsRedirection();
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseRouting();
 
