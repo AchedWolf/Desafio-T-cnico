@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "uU0TMtz18WOtF+GrL1iQFowPxacovcvyLI6EQBk0BnLa4pMT+WEQDehLDox6EA299TZ5LNJYPj2DIolgE8urTA==",
+  "dgSpecHash": "7G5ECJHRBuDFS5FCe4kbafFEo3MH7VOMxWrZj0+DCdzPXc42y6iZ+0rOYQZYq69/aXdgbyuB7x5fdsM9QMJobA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Pichau\\Desktop\\Arquivos\\Serviços\\Luby\\Luby.csproj",
   "expectedPackageFiles": [
@@ -34,7 +34,6 @@
     "C:\\Users\\Pichau\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\5.0.0-preview.6.20312.4\\microsoft.entityframeworkcore.abstractions.5.0.0-preview.6.20312.4.nupkg.sha512",
     "C:\\Users\\Pichau\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\5.0.0-preview.6.20312.4\\microsoft.entityframeworkcore.analyzers.5.0.0-preview.6.20312.4.nupkg.sha512",
     "C:\\Users\\Pichau\\.nuget\\packages\\microsoft.entityframeworkcore.design\\3.1.5\\microsoft.entityframeworkcore.design.3.1.5.nupkg.sha512",
-    "C:\\Users\\Pichau\\.nuget\\packages\\microsoft.entityframeworkcore.inmemory\\3.1.5\\microsoft.entityframeworkcore.inmemory.3.1.5.nupkg.sha512",
     "C:\\Users\\Pichau\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\5.0.0-preview.6.20312.4\\microsoft.entityframeworkcore.relational.5.0.0-preview.6.20312.4.nupkg.sha512",
     "C:\\Users\\Pichau\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\5.0.0-preview.6.20312.4\\microsoft.entityframeworkcore.sqlserver.5.0.0-preview.6.20312.4.nupkg.sha512",
     "C:\\Users\\Pichau\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
