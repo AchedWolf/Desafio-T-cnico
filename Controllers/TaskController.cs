@@ -16,7 +16,6 @@ namespace Luby.Controllers
         // Registrar nova Task
         [HttpPost]
         [Route("")]
-        [Authorize]
         public async Task<ActionResult<Task>> Post(
             [FromServices] DataContext context,
             [FromBody]Task model)
@@ -26,6 +25,10 @@ namespace Luby.Controllers
                 // Validação se usuario existe
                 if(!(await context.Users.AnyAsync(x => x.Id == model.UserId)))
                     return BadRequest(new {message = "O usuario que você quer vincular não existe."});
+
+                // Verificando se o usuario mandou um id
+                if (model.Id != 0)
+                    return BadRequest(new { message = "Não hà necessidade de se mandar o id, pois ele é gerado automaticamente." });
 
                 // Criando Task
                 context.Tasks.Add(model);
@@ -41,7 +44,6 @@ namespace Luby.Controllers
         // Visualizar todas as Tasks
         [HttpGet]
         [Route("")]
-        [Authorize]
         public async Task<ActionResult<List<Task>>> Get([FromServices] DataContext context)
         {
             // Gerado lista de Tasks
@@ -52,7 +54,6 @@ namespace Luby.Controllers
         // Visualizar uma task pelo Id
         [HttpGet]
         [Route("{id:int}")]
-        [Authorize]
         public async Task<ActionResult<Task>> GetById(
             [FromServices] DataContext context, 
             int id)
@@ -67,7 +68,6 @@ namespace Luby.Controllers
         // Função de Deletar 
         [HttpDelete]
         [Route("{id:int}")]
-        [Authorize]
         public async Task<ActionResult<Task>> Delete(
             [FromServices] DataContext context,
             int id)
@@ -90,7 +90,6 @@ namespace Luby.Controllers
         // Função de Editar
         [HttpPut]
         [Route("{id:int}")]
-        [Authorize]
         public async Task<ActionResult<Task>> Put(
             [FromServices] DataContext context, 
             int id, 
@@ -158,7 +157,6 @@ namespace Luby.Controllers
         // Função de Editar concluded
         [HttpPut]
         [Route("concluded/{id:int}")]
-        [Authorize]
         public async Task<ActionResult<Task>> PutConcluded(
             [FromServices] DataContext context, 
             int id)
