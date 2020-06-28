@@ -102,7 +102,7 @@ namespace Luby.Controllers
                 return NotFound(new {message = "Task ou dados inválidos."});
             }
 
-            // Puchando Task
+            // Buscando Task
             var task = await context.Tasks
                 .AsNoTracking()
                 .FirstAsync(x => x.Id == id);

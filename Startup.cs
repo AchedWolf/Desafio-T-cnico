@@ -22,14 +22,9 @@ namespace Luby
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // BD normal
-            // services.AddDbContext<DataContext>(opt => opt.UseSqlServer("Server=localhost;Database=LubyDB;Trusted_Connection=true;"));   
+            // BD
+            services.AddDbContext<DataContext>(opt => opt.UseSqlServer(Settings.ConnectionStrings));   
 
-            // BD na memoria
-            services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("Database"));
-            services.AddScoped<DataContext, DataContext>();
-            
-            services.AddCors();
             services.AddControllers();
 
             // Token
@@ -52,7 +47,7 @@ namespace Luby
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context)
         {
             if (env.IsDevelopment())
             {
@@ -63,11 +58,6 @@ namespace Luby
 
             app.UseRouting();
 
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
-
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -75,6 +65,8 @@ namespace Luby
             {
                 endpoints.MapControllers();
             });
+
+            InicializaDB.Initialize(context);
         }
     }
 }
