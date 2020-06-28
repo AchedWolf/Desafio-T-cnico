@@ -137,14 +137,3 @@ C:\Users\Pichau\Desktop\Arquivos\Serviços\Luby\bin\Debug\netcoreapp3.1\Swashbuc
 C:\Users\Pichau\Desktop\Arquivos\Serviços\Luby\obj\Debug\netcoreapp3.1\Luby.csproj.CoreCompileInputs.cache
 C:\Users\Pichau\Desktop\Arquivos\Serviços\Luby\obj\Debug\netcoreapp3.1\Luby.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Pichau\Desktop\Arquivos\Serviços\Luby\obj\Debug\netcoreapp3.1\Luby.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Pichau\Desktop\Arquivos\Serviços\Luby\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
-C:\Users\Pichau\Desktop\Arquivos\Serviços\Luby\bin\Debug\netcoreapp3.1\Microsoft.DotNet.InternalAbstractions.dll
-C:\Users\Pichau\Desktop\Arquivos\Serviços\Luby\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
-C:\Users\Pichau\Desktop\Arquivos\Serviços\Luby\bin\Debug\netcoreapp3.1\Microsoft.Extensions.PlatformAbstractions.dll
-C:\Users\Pichau\Desktop\Arquivos\Serviços\Luby\bin\Debug\netcoreapp3.1\Namotion.Reflection.dll
-C:\Users\Pichau\Desktop\Arquivos\Serviços\Luby\bin\Debug\netcoreapp3.1\NJsonSchema.dll
-C:\Users\Pichau\Desktop\Arquivos\Serviços\Luby\bin\Debug\netcoreapp3.1\NSwag.Annotations.dll
-C:\Users\Pichau\Desktop\Arquivos\Serviços\Luby\bin\Debug\netcoreapp3.1\NSwag.AspNetCore.dll
-C:\Users\Pichau\Desktop\Arquivos\Serviços\Luby\bin\Debug\netcoreapp3.1\NSwag.Core.dll
-C:\Users\Pichau\Desktop\Arquivos\Serviços\Luby\bin\Debug\netcoreapp3.1\NSwag.Generation.dll
-C:\Users\Pichau\Desktop\Arquivos\Serviços\Luby\bin\Debug\netcoreapp3.1\NSwag.Generation.AspNetCore.dll

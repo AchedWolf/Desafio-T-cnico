@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace Luby
 {
@@ -47,7 +48,31 @@ namespace Luby
             });
 
             // Swagger
-            services.AddSwaggerDocument();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Luby", Version = "v1" });
+                
+                // Configuração JWT
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+                    In = ParameterLocation.Header, 
+                    Description = "Insira o Token JWT de autenticação.<br> Exemplo: 'Bearer sdaj4653asf4asd3sa6'",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey 
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                { 
+                    new OpenApiSecurityScheme 
+                    { 
+                    Reference = new OpenApiReference 
+                    { 
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer" 
+                    } 
+                    },
+                    new string[] { } 
+                    } 
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context)
@@ -59,8 +84,11 @@ namespace Luby
 
             app.UseHttpsRedirection();
 
-            app.UseOpenApi();
-            app.UseSwaggerUi3();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Luby");
+            });
 
             app.UseRouting();
 
